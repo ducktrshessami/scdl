@@ -1,4 +1,4 @@
-const scdl = require("scdl"); // SoundCloud
+const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs"); // File I/O
 
 scdl.setClientID(""); // Set client_id
