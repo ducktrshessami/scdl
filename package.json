@@ -18,5 +18,8 @@
   "homepage": "https://github.com/ducktrshessami/scdl#readme",
   "dependencies": {
     "scdl-core": "github:ducktrshessami/scdl-core"
+  },
+  "engines": {
+    "node": "*"
   }
 }
