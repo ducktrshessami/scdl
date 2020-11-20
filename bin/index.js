@@ -65,6 +65,7 @@ function main() {
 }
 
 /*
+Print usage information to the console
 */
 function displayHelp() {
     console.log(`
