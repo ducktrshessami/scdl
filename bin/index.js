@@ -4,10 +4,10 @@ const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs").promises; // File I/O
 var config = require("../cfg/config.json"); // Authorization
 
-var URL, clientID, OAuth;
+var URL, ID, OAuth;
 
 /*
-Handle args
+Handle args and config updates
 */
 function main() {
     for (let i = 2; i < process.argv.length; i++) {
@@ -18,7 +18,7 @@ function main() {
                     throw "client_id not specified";
                 }
                 else {
-                    clientID = clientID || process.argv[++i];
+                    ID = ID || process.argv[++i];
                 }
                 break;
             case "-a":
@@ -35,19 +35,19 @@ function main() {
                 break;
         }
     }
-    if (clientID) {
-        newClientID(clientID);
+    if (ID) {
+        config.clientID = ID;
     }
     if (OAuth) {
-        newOauthToken(OAuth);
+        config.oauthToken = token;
     }
-    if (clientID || OAuth) {
-        updateConfig();
+    if (ID || OAuth) {
+        fs.writeFile("../test.json", JSON.stringify(config, null, 4)).catch(console.error);
     }
     if (URL) {
         downloadSong(URL);
     }
-    if (!(URL || clientID || OAuth)) {
+    if (!(URL || ID || OAuth)) {
         throw "URL not specified";
     }
 }
@@ -55,6 +55,9 @@ function main() {
 /*
 */
 async function downloadSong(URL) {
+    scdl.setClientID(config.clientID); // Set authorization
+    scdl.setOauthToken(config.oauthToken);
+
     if (!scdl.validateURL(URL)) {
         throw "Invalid URL: " + URL;
     }
@@ -65,24 +68,6 @@ async function downloadSong(URL) {
         }).catch(console.error);*/
         console.log(__dirname + "");
     }
-}
-
-/*
-*/
-function newClientID(ID) {
-    scdl.setClientID(ID);
-}
-
-/*
-*/
-function newOauthToken(token) {
-    scdl.setOauthToken(token);
-}
-
-/*
-*/
-function updateConfig() {
-
 }
 
 main();
