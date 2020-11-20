@@ -56,10 +56,12 @@ async function downloadSong(URL) {
         throw "Invalid URL: " + URL;
     }
     else {
-        scdl.getInfo(URL).then(info => { // Get title for filename
+        /*scdl.getInfo(URL).then(info => { // Get title for filename
             console.log("Downloading " + info.title);
             scdl.downloadFromInfo(info).pipe(fs.createWriteStream(info.title + ".mp3")); // Download to file
-        }).catch(console.error);
+        }).catch(console.error);*/
+        console.log(__dirname);
+        console.log(process.cwd());
     }
 }
 
@@ -78,7 +80,7 @@ function newOauthToken(token) {
 /*
 */
 function updateConfig() {
-    
+
 }
 
 main();
