@@ -42,7 +42,7 @@ function main() {
         config.oauthToken = token;
     }
     if (ID || OAuth) {
-        fs.writeFile("../test.json", JSON.stringify(config, null, 4)).catch(console.error);
+        fs.writeFile(`${__dirname}/../cfg/config.json`, JSON.stringify(config, null, 4)).catch(console.error);
     }
     if (URL) {
         downloadSong(URL);
@@ -62,11 +62,10 @@ async function downloadSong(URL) {
         throw "Invalid URL: " + URL;
     }
     else {
-        /*scdl.getInfo(URL).then(info => { // Get title for filename
+        scdl.getInfo(URL).then(info => { // Get title for filename
             console.log("Downloading " + info.title);
             scdl.downloadFromInfo(info).pipe(fs.createWriteStream(info.title + ".mp3")); // Download to file
-        }).catch(console.error);*/
-        console.log(__dirname + "");
+        }).catch(console.error);
     }
 }
 
