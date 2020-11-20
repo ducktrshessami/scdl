@@ -4,7 +4,7 @@ const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs"); // File I/O
 var config = require("../cfg/config.json"); // Authorization
 
-var query, ID, OAuth;
+var query, ID, OAuth, filename;
 
 /*
 Handle args and config updates
@@ -28,6 +28,15 @@ function main() {
                 }
                 else {
                     OAuth = OAuth || process.argv[++i];
+                }
+                break;
+            case "-o": // Set output file
+            case "--output":
+                if (i == process.argv.length - 1) {
+                    throw "Output file not specified";
+                }
+                else {
+                    filename = process.argv[++i];
                 }
                 break;
             default: // Set download query
@@ -62,12 +71,12 @@ async function downloadSong(query) {
     scdl.setOauthToken(config.oauthToken);
 
     if (!scdl.validateURL(query)) {
-        throw "Invalid URL: " + query;
+        throw `Invalid URL: ${query}`;
     }
     else {
         scdl.getInfo(query).then(info => { // Get title for filename
-            console.log("Downloading " + info.title);
-            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(info.title + ".mp3")); // Download to file
+            console.log(`Downloading ${info.title}.mp3`);
+            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename ? filename : `${info.title}.mp3`)); // Download to file
         }).catch(console.error);
     }
 }
