@@ -2,7 +2,7 @@
   "name": "scdl",
   "version": "1.0.0",
   "description": "A CLI for scdl-core",
-  "main": "./bin/index.js",
+  "main": "./lib/index.js",
   "bin": {
     "scdl": "./bin/index.js"
   },
@@ -18,8 +18,5 @@
   "homepage": "https://github.com/ducktrshessami/scdl#readme",
   "dependencies": {
     "scdl-core": "github:ducktrshessami/scdl-core"
-  },
-  "engines": {
-    "node": "*"
   }
 }

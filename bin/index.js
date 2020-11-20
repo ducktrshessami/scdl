@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs").promises; // File I/O
 
