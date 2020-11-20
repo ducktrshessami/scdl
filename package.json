@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A CLI for scdl-core",
   "main": "./bin/index.js",
-  "bin": "./bin/index.js",
+  "bin": {
+    "scdl": "./bin/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ducktrshessami/scdl.git"
