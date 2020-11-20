@@ -15,7 +15,8 @@ function main() {
             case "-c": // Set client_id
             case "--client-id":
                 if (i == process.argv.length - 1) {
-                    throw "client_id not specified";
+                    displayHelp();
+                    return;
                 }
                 else {
                     ID = ID || process.argv[++i];
@@ -24,7 +25,8 @@ function main() {
             case "-a": // Set OAuth token
             case "--oauth-token":
                 if (i == process.argv.length - 1) {
-                    throw "OAuth token not specified";
+                    displayHelp();
+                    return;
                 }
                 else {
                     OAuth = OAuth || process.argv[++i];
@@ -33,7 +35,8 @@ function main() {
             case "-o": // Set output file
             case "--output":
                 if (i == process.argv.length - 1) {
-                    throw "Output file not specified";
+                    displayHelp();
+                    return;
                 }
                 else {
                     filename = process.argv[++i];
@@ -57,8 +60,27 @@ function main() {
         downloadSong(query);
     }
     if (!(query || ID || OAuth)) { // Got nothing
-        throw "URL not specified";
+        displayHelp();
     }
+}
+
+/*
+*/
+function displayHelp() {
+    console.log(`
+Usage: scdl [URL] [options]
+        URL     The song URL
+        options:
+            -c, --client-id         Set client ID for authorization
+            -a, --oauth-token       Set OAuth token for authorization
+            -o, --output            Specify output file
+        
+You must set either a client ID or an OAuth token in order to download songs. When either
+is set, it is saved to a local config for future use, but may need to be updated as client
+IDs expire after a certain amount of time.
+
+Default output file is "./song_title.mp3"
+`);
 }
 
 /*
@@ -71,7 +93,7 @@ async function downloadSong(query) {
     scdl.setOauthToken(config.oauthToken);
 
     if (!scdl.validateURL(query)) {
-        throw `Invalid URL: ${query}`;
+        console.error(`Invalid URL: ${query}`);
     }
     else {
         scdl.getInfo(query).then(info => { // Get title for filename
