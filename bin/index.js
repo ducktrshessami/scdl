@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const scdl = require("scdl-core"); // SoundCloud
-const fs = require("fs").promises; // File I/O
+const fs = require("fs"); // File I/O
 var config = require("../cfg/config.json"); // Authorization
 
 var query, ID, OAuth;
@@ -42,7 +42,7 @@ function main() {
         config.oauthToken = token;
     }
     if (ID || OAuth) { // Update stored config
-        fs.writeFile(`${__dirname}/../cfg/config.json`, JSON.stringify(config, null, 4)).catch(console.error);
+        fs.promises.writeFile(`${__dirname}/../cfg/config.json`, JSON.stringify(config, null, 4)).catch(console.error);
     }
     if (query) { // Got query at some point
         downloadSong(query);
@@ -68,7 +68,7 @@ async function downloadSong(query) {
         scdl.getInfo(query).then(info => { // Get title for filename
             console.log("Downloading " + info.title);
             scdl.downloadFromInfo(info).pipe(fs.createWriteStream(info.title + ".mp3")); // Download to file
-        }).catch(console.log);
+        }).catch(console.error);
     }
 }
 
