@@ -2,6 +2,7 @@
 
 const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs").promises; // File I/O
+var config = require("../cfg/config.json"); // Authorization
 
 var URL, clientID, OAuth;
 
@@ -62,8 +63,7 @@ async function downloadSong(URL) {
             console.log("Downloading " + info.title);
             scdl.downloadFromInfo(info).pipe(fs.createWriteStream(info.title + ".mp3")); // Download to file
         }).catch(console.error);*/
-        console.log(__dirname);
-        console.log(process.cwd());
+        console.log(__dirname + "");
     }
 }
 
