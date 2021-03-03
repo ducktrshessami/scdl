@@ -98,8 +98,9 @@ async function downloadSong(query) {
     }
     else {
         scdl.getInfo(query).then(info => { // Get title for filename
-            console.log(`Downloading ${info.title}.mp3`);
-            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename ? filename : generateFilename(info.title))); // Download to file
+            filename = filename ? filename : generateFilename(info.title);
+            console.log(`Downloading ${filename}`);
+            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename)); // Download to file
         }).catch(console.error);
     }
 }
