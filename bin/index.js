@@ -81,7 +81,7 @@ is set, it is saved to a local config for future use, but may need to be updated
 IDs expire after a certain amount of time.
 
 Default output file is "./song_title.mp3"
-`);
+`.trim());
 }
 
 /*
@@ -99,9 +99,23 @@ async function downloadSong(query) {
     else {
         scdl.getInfo(query).then(info => { // Get title for filename
             console.log(`Downloading ${info.title}.mp3`);
-            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename ? filename : `${info.title}.mp3`)); // Download to file
+            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename ? filename : generateFilename(info.title))); // Download to file
         }).catch(console.error);
     }
+}
+
+/*
+
+*/
+function generateFilename(title, n = 0) {
+    let foo;
+    if (n) {
+        foo = `${title} (${n}).mp3`;
+    }
+    else {
+        foo = `${title}.mp3`;
+    }
+    return fs.existsSync(foo) ? generateFilename(title, n + 1) : foo;
 }
 
 main();
