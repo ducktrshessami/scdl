@@ -106,7 +106,10 @@ async function downloadSong(query) {
 }
 
 /*
+Handle duplicate files
 
+@param title: a string containing the song's title
+@param n: a number used when recursing to handle duplicates
 */
 function generateFilename(title, n = 0) {
     let foo;
