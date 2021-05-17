@@ -2,7 +2,11 @@
 
 const scdl = require("scdl-core"); // SoundCloud
 const fs = require("fs"); // File I/O
-var config = require("../cfg/config.json"); // Authorization
+const { resolve } = require("path"); // File path resolution
+const scKey = require("soundcloud-key-fetch"); // Client ID scraping
+const config = require("../cfg/config.json"); // Authorization
+
+const configPath = resolve(__dirname, "..", "cfg", "config.json");
 
 var query, ID, OAuth, filename;
 
@@ -54,7 +58,7 @@ function main() {
         config.oauthToken = token;
     }
     if (ID || OAuth) { // Update stored config
-        fs.promises.writeFile(`${__dirname}/../cfg/config.json`, JSON.stringify(config, null, 4)).catch(console.error);
+        writeConfig();
     }
     if (query) { // Got query at some point
         downloadSong(query);
@@ -62,6 +66,13 @@ function main() {
     if (!(query || ID || OAuth)) { // Got nothing
         displayHelp();
     }
+}
+
+/*
+Asyncronously update the config file
+*/
+function writeConfig() {
+    return fs.promises.writeFile(configPath, JSON.stringify(config, null, 4)).catch(console.error);
 }
 
 /*
@@ -90,8 +101,7 @@ Download song from CLI param
 @param URL: a string containing the supposed URL to download
 */
 async function downloadSong(query) {
-    scdl.setClientID(config.clientID); // Set authorization
-    scdl.setOauthToken(config.oauthToken);
+    await handleAuthorization();
 
     if (!scdl.validateURL(query)) {
         console.error(`Invalid URL: ${query}`);
@@ -103,6 +113,19 @@ async function downloadSong(query) {
             scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename)); // Download to file
         }).catch(console.error);
     }
+}
+
+/*
+Set authorization and scrape a new client ID if necessary
+*/
+async function handleAuthorization() {
+    scdl.setOauthToken(config.oauthToken);
+    if (!(await scKey.testKey(config.clientID))) {
+        console.info("Invalid client ID: Fetching a new one");
+        config.clientID = await scKey.fetchKey();
+        writeConfig();
+    }
+    scdl.setClientID(config.clientID);
 }
 
 /*
