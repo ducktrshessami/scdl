@@ -1,6 +1,6 @@
 {
   "name": "scdl",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A CLI for scdl-core",
   "main": "./lib/index.js",
   "bin": "./bin/index.js",
@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/ducktrshessami/scdl#readme",
   "dependencies": {
-    "scdl-core": "github:ducktrshessami/scdl-core"
+    "scdl-core": "github:ducktrshessami/scdl-core",
+    "soundcloud-key-fetch": "^1.0.11"
   }
 }
