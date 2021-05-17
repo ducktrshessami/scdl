@@ -120,7 +120,7 @@ Set authorization and scrape a new client ID if necessary
 */
 async function handleAuthorization() {
     scdl.setOauthToken(config.oauthToken);
-    if (!(await scKey.testKey(config.clientID))) {
+    if (!(config.clientID && (await scKey.testKey(config.clientID)))) {
         console.info("Invalid client ID: Fetching a new one");
         config.clientID = await scKey.fetchKey();
         writeConfig();
