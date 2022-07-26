@@ -21,7 +21,7 @@ function read() {
 
 function write(data) {
     createIfNotExist(false);
-    return fs.promises.writeFile(configFile, JSON.stringify(data, null, 4));
+    return fs.promises.writeFile(configFile, JSON.stringify(data, null, 4) + "\n");
 }
 
 module.exports = {
