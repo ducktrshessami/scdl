@@ -73,18 +73,19 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateFilename(info, outputDir = path.resolve(process.cwd())) {
+function generateName(info, file, outputDir = path.resolve(process.cwd())) {
     let i = 0;
-    let filename = `${info.user.username}-${info.title}-${info.id}.mp3`;
+    let filename = file ? `${info.user.username}-${info.title}-${info.id}.mp3` : `${info.title}-${info.id}`;
     while (fs.existsSync(path.join(outputDir, filename))) {
-        filename = `${info.user.username}-${info.title}-${info.id}-${++i}.mp3`;
+        i++;
+        filename = file ? `${info.user.username}-${info.title}-${info.id}-${i}.mp3` : `${info.title}-${info.id}-${i}`;
     }
     return filename;
 }
 
 function downloadTrack(info, output) {
     return new Promise(resolve => {
-        const outputPath = path.resolve(output || generateFilename(info));
+        const outputPath = path.resolve(output || generateName(info, true));
         console.log(`Streaming to ${outputPath}`);
         scdl
             .downloadFromInfo(info)
@@ -98,7 +99,11 @@ function downloadTrack(info, output) {
 }
 
 async function downloadPlaylist(info, output) {
-
+    const outputDir = path.resolve(output || generateName(info, false));
+    if (!fs.existsSync(outputDir)) {
+        console.log(`Creating ${outputDir}`);
+        fs.mkdirSync(outputDir);
+    }
 }
 
 main()
