@@ -15,6 +15,9 @@ async function main() {
     } = parseArgs();
     scdl.clientID = clientID;
     scdl.oauthToken = argsOauthToken;
+    if (argsOauthToken) {
+        config.write(argsOauthToken);
+    }
     if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
         if (!scdl.clientID && !scdl.oauthToken) {
             const { oauthToken: configOauthToken } = config.read();

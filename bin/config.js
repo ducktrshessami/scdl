@@ -16,12 +16,13 @@ function createIfNotExist(checkFile) {
 
 function read() {
     createIfNotExist(true);
-    return JSON.parse(fs.readFileSync(configFile, { encoding: "utf8" }));
+    const { oauthToken } = JSON.parse(fs.readFileSync(configFile, { encoding: "utf8" }));
+    return oauthToken || null;
 }
 
-function write(data) {
+function write(oauthToken = "") {
     createIfNotExist(false);
-    return fs.promises.writeFile(configFile, JSON.stringify(data, null, 4) + "\n");
+    return fs.promises.writeFile(configFile, `{\n    "oauthToken": "${oauthToken}"\n}\n`);
 }
 
 module.exports = {
