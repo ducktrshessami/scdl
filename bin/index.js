@@ -21,7 +21,7 @@ async function main() {
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
-        config.write(argsOauthToken);
+        await config.write(argsOauthToken);
     }
     if (query) {
         hadAction = true;
@@ -55,7 +55,22 @@ function displayHelp() {
 }
 
 async function downloadTrack(query, output) {
-
+    try {
+        const info = await scdl.getInfo(query);
+        const outputPath = path.resolve(process.cwd(), output || `${info.user.username} - ${info.title}.mp3`);
+    }
+    catch (error) {
+        if (scdl.oauthToken && error.message === "401 Unauthorized") {
+            console.log("Invalid OAuth token\nClearing token and fetching client ID");
+            await config.write();
+            scdl.oauthToken = null;
+            scdl.clientID ||= await fetchKey();
+            return downloadTrack(query, output);
+        }
+        else {
+            console.error(error);
+        }
+    }
 }
 
 async function downloadPlaylist(query, output) {
