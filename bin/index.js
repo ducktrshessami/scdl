@@ -39,7 +39,7 @@ async function main() {
             return (playlist ? downloadPlaylist : downloadTrack)(query, output);
         }
         else {
-            throw new Error("Invalid URL");
+            throw new Error(`Invalid URL: ${query}`);
         }
     }
     if (!hadAction) {
