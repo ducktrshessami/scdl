@@ -27,7 +27,7 @@ async function main() {
         hadAction = true;
         if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
             if (!scdl.clientID && !scdl.oauthToken) {
-                const { oauthToken: configOauthToken } = config.read();
+                const configOauthToken = config.read();
                 if (configOauthToken) {
                     scdl.oauthToken = configOauthToken;
                 }
