@@ -54,10 +54,25 @@ function displayHelp() {
         .pipe(process.stdout);
 }
 
+function generateFilename(info, outputDir = path.resolve(process.cwd()), n = 0) {
+    let i = 0;
+    let filename = `${info.user.username}-${info.title}-${info.id}.mp3`;
+    while (fs.existsSync(path.join(outputDir, filename))) {
+        filename = `${info.user.username}-${info.title}-${info.id}-${++i}.mp3`;
+    }
+    return filename;
+}
+
 async function downloadTrack(query, output) {
     try {
         const info = await scdl.getInfo(query);
-        const outputPath = path.resolve(process.cwd(), output || `${info.user.username} - ${info.title}.mp3`);
+        const outputPath = path.resolve(process.cwd(), output || generateFilename(info));
+        console.log(`Streaming to ${outputPath}`);
+        scdl
+            .downloadFromInfo(info)
+            .on("error", console.error)
+            .on("end", () => console.log("Done"))
+            .pipe(fs.createWriteStream(outputPath));
     }
     catch (error) {
         if (scdl.oauthToken && error.message === "401 Unauthorized") {
