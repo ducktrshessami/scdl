@@ -66,7 +66,7 @@ function generateFilename(info, outputDir = path.resolve(process.cwd()), n = 0) 
 async function downloadTrack(query, output) {
     try {
         const info = await scdl.getInfo(query);
-        const outputPath = path.resolve(process.cwd(), output || generateFilename(info));
+        const outputPath = path.resolve(output || generateFilename(info));
         console.log(`Streaming to ${outputPath}`);
         scdl
             .downloadFromInfo(info)
