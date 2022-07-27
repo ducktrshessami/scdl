@@ -37,11 +37,11 @@ async function main() {
     }
 }
 
-async function downloadPlaylist(query, output) {
+async function downloadTrack(query, output) {
 
 }
 
-async function downloadTrack(query, output) {
+async function downloadPlaylist(query, output) {
 
 }
 
