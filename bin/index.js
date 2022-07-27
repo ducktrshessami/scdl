@@ -73,7 +73,7 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateFilename(info, outputDir = path.resolve(process.cwd()), n = 0) {
+function generateFilename(info, outputDir = path.resolve(process.cwd())) {
     let i = 0;
     let filename = `${info.user.username}-${info.title}-${info.id}.mp3`;
     while (fs.existsSync(path.join(outputDir, filename))) {
