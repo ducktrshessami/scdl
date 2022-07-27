@@ -16,6 +16,7 @@ async function main() {
     scdl.clientID = clientID;
     scdl.oauthToken = argsOauthToken;
     if (argsOauthToken) {
+        console.log("Storing Oauth token");
         config.write(argsOauthToken);
     }
     if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
