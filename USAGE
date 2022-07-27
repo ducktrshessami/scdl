@@ -1,0 +1,12 @@
+Usage: scdl [URL] [options]
+    URL     The song URL
+    options:
+        -c, --client-id         Set client ID for authorization
+        -a, --oauth-token       Set OAuth token for authorization
+        -o, --output            Specify output file
+
+You must set either a client ID or an OAuth token in order to download songs. When either
+is set, it is saved to a local config for future use, but may need to be updated as client
+IDs expire after a certain amount of time.
+
+Default output file is "./song_title.mp3"
