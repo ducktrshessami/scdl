@@ -73,19 +73,19 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateName(info, file, outputDir = path.resolve(process.cwd())) {
+function generateName(info, prefix = "", extension = "", outputDir = path.resolve(process.cwd())) {
     let i = 0;
-    let filename = file ? `${info.user.username}-${info.title}-${info.id}.mp3` : `${info.title}-${info.id}`;
+    let filename = (prefix ? prefix + "-" : "") + `${info.title}-${info.id}${extension || ""}`;
     while (fs.existsSync(path.join(outputDir, filename))) {
         i++;
-        filename = file ? `${info.user.username}-${info.title}-${info.id}-${i}.mp3` : `${info.title}-${info.id}-${i}`;
+        filename = (prefix ? `${prefix}-` : "") + `${info.title}-${info.id}-${i}${extension || ""}`;
     }
     return filename;
 }
 
 function downloadTrack(info, output) {
     return new Promise(resolve => {
-        const outputPath = path.resolve(output || generateName(info, true));
+        const outputPath = path.resolve(output || generateName(info, info.user.username, ".mp3"));
         console.log(`Streaming to ${outputPath}`);
         scdl
             .downloadFromInfo(info)
@@ -99,11 +99,25 @@ function downloadTrack(info, output) {
 }
 
 async function downloadPlaylist(info, output) {
-    const outputDir = path.resolve(output || generateName(info, false));
+    const outputDir = path.resolve(output || generateName(info));
     if (!fs.existsSync(outputDir)) {
         console.log(`Creating ${outputDir}`);
         fs.mkdirSync(outputDir);
     }
+    const streams = await scdl.playlist.downloadFromInfo(info);
+    return Promise.all(streams.map((stream, i) => new Promise(resolve => {
+        if (stream) {
+            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${i}-${info.tracks[i].user.username}`, ".mp3", outputDir));
+            console.log(`Streaming to ${outputPath}`);
+            stream
+                .on("error", console.error)
+                .on("end", resolve)
+                .pipe(fs.createWriteStream(outputPath));
+        }
+        else {
+            console.error(`Failed to stream ${i}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
+        }
+    })));
 }
 
 main()
