@@ -30,6 +30,7 @@ async function main() {
     if (query) {
         hadAction = true;
         if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
+            let options;
             if (!scdl.clientID && !scdl.oauthToken) {
                 const configOauthToken = config.read();
                 if (configOauthToken) {
@@ -40,8 +41,11 @@ async function main() {
                     scdl.clientID = await fetchKey();
                 }
             }
+            if (preset || protocol || mimeType || quality) {
+                options = { preset, protocol, mimeType, quality };
+            }
             const info = await getInfoWithRetry(query, playlist);
-            return (playlist ? downloadPlaylist : downloadTrack)(info, output);
+            return (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
         }
         else {
             throw new Error(`Invalid URL: ${query}`);
@@ -87,12 +91,12 @@ function generateName(info, prefix = "", extension = "", outputDir = path.resolv
     return filename;
 }
 
-function downloadTrack(info, output) {
+function downloadTrack(info, output, options) {
     return new Promise(resolve => {
         const outputPath = path.resolve(output || generateName(info, info.user.username, ".mp3"));
         console.log(`Streaming to ${outputPath}`);
         scdl
-            .downloadFromInfo(info)
+            .downloadFromInfo(info, options)
             .on("error", console.error)
             .on("end", () => {
                 console.log("Done");
@@ -109,13 +113,13 @@ function widen(n, targetWidth) {
         .join("") + n;
 }
 
-async function downloadPlaylist(info, output) {
+async function downloadPlaylist(info, output, options) {
     const outputDir = path.resolve(output || generateName(info));
     if (!fs.existsSync(outputDir)) {
         console.log(`Creating ${outputDir}`);
         fs.mkdirSync(outputDir);
     }
-    const streams = await scdl.playlist.downloadFromInfo(info);
+    const streams = await scdl.playlist.downloadFromInfo(info, options);
     const { length: indexWidth } = streams.length.toString();
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         const wideIndex = widen(i + 1, indexWidth);
