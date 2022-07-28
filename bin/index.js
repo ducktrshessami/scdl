@@ -2,6 +2,7 @@
 
 const scdl = require("scdl-core");
 const { fetchKey } = require("soundcloud-key-fetch");
+const { getExtension } = require("mime/lite");
 const path = require("path");
 const fs = require("fs");
 const config = require("./config");
@@ -96,7 +97,8 @@ function downloadTrack(info, output, options) {
         const stream = scdl
             .downloadFromInfo(info, options)
             .on("transcoding", transcoding => {
-                const outputPath = path.resolve(output || generateName(info, info.user.username, ".mp3"));
+                const extension = getExtension(transcoding.format.mime_type);
+                const outputPath = path.resolve(output || generateName(info, info.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
                 stream.pipe(fs.createWriteStream(outputPath));
             })
@@ -126,7 +128,8 @@ async function downloadPlaylist(info, output, options) {
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
-            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, ".mp3", outputDir));
+            const extension = getExtension(stream.transcoding.format.mime_type);
+            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
