@@ -114,8 +114,9 @@ async function downloadPlaylist(info, output) {
     const streams = await scdl.playlist.downloadFromInfo(info);
     const { length: indexWidth } = streams.length.toString();
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
+        const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
-            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${widen(i + 1, indexWidth)}-${info.tracks[i].user.username}`, ".mp3", outputDir));
+            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, ".mp3", outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
@@ -123,7 +124,7 @@ async function downloadPlaylist(info, output) {
                 .pipe(fs.createWriteStream(outputPath));
         }
         else {
-            console.error(`Failed to stream ${i + 1}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
+            console.error(`Failed to stream ${wideIndex}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
         }
     })));
 }
