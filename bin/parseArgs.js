@@ -24,7 +24,7 @@ function getFlag(str) {
             ?.at(1);
         return Object
             .keys(flags)
-            .find(flag => flag === name || flags[flag].short === name);
+            .find(flag => flag === name || (flags[flag].short && flags[flag].short === name));
     }
 }
 
