@@ -98,6 +98,13 @@ function downloadTrack(info, output) {
     });
 }
 
+function widen(n, targetWidth) {
+    const { length: currentWidth } = n.toString();
+    return (new Array(targetWidth - currentWidth))
+        .fill(0)
+        .join("") + n;
+}
+
 async function downloadPlaylist(info, output) {
     const outputDir = path.resolve(output || generateName(info));
     if (!fs.existsSync(outputDir)) {
@@ -105,9 +112,10 @@ async function downloadPlaylist(info, output) {
         fs.mkdirSync(outputDir);
     }
     const streams = await scdl.playlist.downloadFromInfo(info);
+    const { length: indexWidth } = streams.length.toString();
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         if (stream) {
-            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${i + 1}-${info.tracks[i].user.username}`, ".mp3", outputDir));
+            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${widen(i + 1, indexWidth)}-${info.tracks[i].user.username}`, ".mp3", outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
