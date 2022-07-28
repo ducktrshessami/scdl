@@ -93,16 +93,18 @@ function generateName(info, prefix = "", extension = "", outputDir = path.resolv
 
 function downloadTrack(info, output, options) {
     return new Promise(resolve => {
-        const outputPath = path.resolve(output || generateName(info, info.user.username, ".mp3"));
-        console.log(`Streaming to ${outputPath}`);
-        scdl
+        const stream = scdl
             .downloadFromInfo(info, options)
+            .on("transcoding", transcoding => {
+                const outputPath = path.resolve(output || generateName(info, info.user.username, ".mp3"));
+                console.log(`Streaming to ${outputPath}`);
+                stream.pipe(fs.createWriteStream(outputPath));
+            })
             .on("error", console.error)
             .on("end", () => {
                 console.log("Done");
                 resolve();
-            })
-            .pipe(fs.createWriteStream(outputPath));
+            });
     });
 }
 
