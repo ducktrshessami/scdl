@@ -13,7 +13,11 @@ async function main() {
         playlist,
         "client-id": clientID,
         "oauth-token": argsOauthToken,
-        output
+        output,
+        preset,
+        protocol,
+        "mime-type": mimeType,
+        quality
     } = parseArgs();
     let hadAction = false;
     scdl.clientID = clientID;

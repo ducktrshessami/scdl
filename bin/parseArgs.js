@@ -14,6 +14,22 @@ const flags = {
     "oauth-token": {
         short: "a",
         requireValue: true
+    },
+    preset: {
+        short: "ps",
+        requireValue: true
+    },
+    protocol: {
+        short: "pc",
+        requireValue: true
+    },
+    "mime-type": {
+        short: "mt",
+        requireValue: true
+    },
+    quality: {
+        short: "q",
+        requireValue: true
     }
 };
 
