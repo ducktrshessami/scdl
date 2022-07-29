@@ -1,148 +1,146 @@
 #!/usr/bin/env node
 
-const scdl = require("scdl-core"); // SoundCloud
-const fs = require("fs"); // File I/O
-const { resolve } = require("path"); // File path resolution
-const scKey = require("soundcloud-key-fetch"); // Client ID scraping
-const config = require("../cfg/config.json"); // Authorization
+const scdl = require("scdl-core");
+const { fetchKey } = require("soundcloud-key-fetch");
+const { getExtension } = require("mime/lite");
+const path = require("path");
+const fs = require("fs");
+const config = require("./config");
+const parseArgs = require("./parseArgs");
 
-const configPath = resolve(__dirname, "..", "cfg", "config.json");
-
-var query, ID, OAuth, filename;
-
-/*
-Handle args and config updates
-*/
-function main() {
-    for (let i = 2; i < process.argv.length; i++) {
-        switch (process.argv[i].toLowerCase()) {
-            case "-c": // Set client_id
-            case "--client-id":
-                if (i == process.argv.length - 1) {
-                    displayHelp();
-                    return;
+async function main() {
+    const {
+        query,
+        playlist,
+        "client-id": clientID,
+        "oauth-token": argsOauthToken,
+        output,
+        preset,
+        protocol,
+        "mime-type": mimeType,
+        quality
+    } = parseArgs();
+    let hadAction = false;
+    scdl.clientID = clientID;
+    scdl.oauthToken = argsOauthToken;
+    if (argsOauthToken) {
+        hadAction = true;
+        console.log("Storing Oauth token");
+        await config.write(argsOauthToken);
+    }
+    if (query) {
+        hadAction = true;
+        if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
+            let options;
+            if (!scdl.clientID && !scdl.oauthToken) {
+                const configOauthToken = config.read();
+                if (configOauthToken) {
+                    scdl.oauthToken = configOauthToken;
                 }
                 else {
-                    ID = ID || process.argv[++i];
+                    console.log("Fetching client ID");
+                    scdl.clientID = await fetchKey();
                 }
-                break;
-            case "-a": // Set OAuth token
-            case "--oauth-token":
-                if (i == process.argv.length - 1) {
-                    displayHelp();
-                    return;
-                }
-                else {
-                    OAuth = OAuth || process.argv[++i];
-                }
-                break;
-            case "-o": // Set output file
-            case "--output":
-                if (i == process.argv.length - 1) {
-                    displayHelp();
-                    return;
-                }
-                else {
-                    filename = process.argv[++i];
-                }
-                break;
-            default: // Set download query
-                query = query || process.argv[i];
-                break;
+            }
+            if (preset || protocol || mimeType || quality) {
+                options = { preset, protocol, mimeType, quality };
+            }
+            const info = await getInfoWithRetry(query, playlist);
+            return (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
+        }
+        else {
+            throw new Error(`Invalid URL: ${query}`);
         }
     }
-    if (ID) { // Handle setting authorization like this to get first set if multiple
-        config.clientID = ID;
-    }
-    if (OAuth) {
-        config.oauthToken = token;
-    }
-    if (ID || OAuth) { // Update stored config
-        writeConfig();
-    }
-    if (query) { // Got query at some point
-        downloadSong(query);
-    }
-    if (!(query || ID || OAuth)) { // Got nothing
+    if (!hadAction) {
         displayHelp();
     }
 }
 
-/*
-Asyncronously update the config file
-*/
-function writeConfig() {
-    return fs.promises.writeFile(configPath, JSON.stringify(config, null, 4)).catch(console.error);
-}
-
-/*
-Print usage information to the console
-*/
 function displayHelp() {
-    console.log(`
-Usage: scdl [URL] [options]
-        URL     The song URL
-        options:
-            -c, --client-id         Set client ID for authorization
-            -a, --oauth-token       Set OAuth token for authorization
-            -o, --output            Specify output file
-        
-You must set either a client ID or an OAuth token in order to download songs. When either
-is set, it is saved to a local config for future use, but may need to be updated as client
-IDs expire after a certain amount of time.
-
-Default output file is "./song_title.mp3"
-`.trim());
+    const usagePath = path.resolve(__dirname, "..", "USAGE");
+    fs
+        .createReadStream(usagePath, { encoding: "utf8" })
+        .pipe(process.stdout);
 }
 
-/*
-Download song from CLI param
-
-@param URL: a string containing the supposed URL to download
-*/
-async function downloadSong(query) {
-    await handleAuthorization();
-
-    if (!scdl.validateURL(query)) {
-        console.error(`Invalid URL: ${query}`);
+async function getInfoWithRetry(url, playlist) {
+    try {
+        return await (playlist ? scdl.playlist.getInfo : scdl.getInfo)(url);
     }
-    else {
-        scdl.getInfo(query).then(info => { // Get title for filename
-            filename = filename ? filename : generateFilename(info.title);
-            console.log(`Downloading ${filename}`);
-            scdl.downloadFromInfo(info).pipe(fs.createWriteStream(filename)); // Download to file
-        }).catch(console.error);
+    catch (error) {
+        if (scdl.oauthToken && error.message === "401 Unauthorized") {
+            console.log("Invalid OAuth token\nClearing token and fetching client ID");
+            await config.write();
+            scdl.oauthToken = null;
+            scdl.clientID ||= await fetchKey();
+            return getInfoWithRetry(url, playlist);
+        }
+        else {
+            console.error(error);
+        }
     }
 }
 
-/*
-Set authorization and scrape a new client ID if necessary
-*/
-async function handleAuthorization() {
-    scdl.setOauthToken(config.oauthToken);
-    if (!(config.clientID && (await scKey.testKey(config.clientID)))) {
-        console.info("Invalid client ID: Fetching a new one");
-        config.clientID = await scKey.fetchKey();
-        writeConfig();
+function generateName(info, prefix = "", extension = "", outputDir = path.resolve(process.cwd())) {
+    let i = 0;
+    let filename = (prefix ? prefix + "-" : "") + `${info.title}-${info.id}${extension || ""}`;
+    while (fs.existsSync(path.join(outputDir, filename))) {
+        i++;
+        filename = (prefix ? `${prefix}-` : "") + `${info.title}-${info.id}-${i}${extension || ""}`;
     }
-    scdl.setClientID(config.clientID);
+    return filename;
 }
 
-/*
-Handle duplicate files
-
-@param title: a string containing the song's title
-@param n: a number used when recursing to handle duplicates
-*/
-function generateFilename(title, n = 0) {
-    let foo;
-    if (n) {
-        foo = `${title} (${n}).mp3`;
-    }
-    else {
-        foo = `${title}.mp3`;
-    }
-    return fs.existsSync(foo) ? generateFilename(title, n + 1) : foo;
+function downloadTrack(info, output, options) {
+    return new Promise(resolve => {
+        const stream = scdl
+            .downloadFromInfo(info, options)
+            .on("transcoding", transcoding => {
+                const extension = getExtension(transcoding.format.mime_type);
+                const outputPath = path.resolve(output || generateName(info, info.user.username, `.${extension}`));
+                console.log(`Streaming to ${outputPath}`);
+                stream.pipe(fs.createWriteStream(outputPath));
+            })
+            .on("error", console.error)
+            .on("end", () => {
+                console.log("Done");
+                resolve();
+            });
+    });
 }
 
-main();
+function widen(n, targetWidth) {
+    const { length: currentWidth } = n.toString();
+    return (new Array(targetWidth - currentWidth))
+        .fill(0)
+        .join("") + n;
+}
+
+async function downloadPlaylist(info, output, options) {
+    const outputDir = path.resolve(output || generateName(info));
+    if (!fs.existsSync(outputDir)) {
+        console.log(`Creating ${outputDir}`);
+        fs.mkdirSync(outputDir);
+    }
+    const streams = await scdl.playlist.downloadFromInfo(info, options);
+    const { length: indexWidth } = streams.length.toString();
+    return Promise.all(streams.map((stream, i) => new Promise(resolve => {
+        const wideIndex = widen(i + 1, indexWidth);
+        if (stream) {
+            const extension = getExtension(stream.transcoding.format.mime_type);
+            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, `.${extension}`, outputDir));
+            console.log(`Streaming to ${outputPath}`);
+            stream
+                .on("error", console.error)
+                .on("end", resolve)
+                .pipe(fs.createWriteStream(outputPath));
+        }
+        else {
+            console.error(`Failed to stream ${wideIndex}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
+        }
+    })));
+}
+
+main()
+    .catch(console.error);
