@@ -13,8 +13,8 @@ parse-hls@^1.0.7:
   integrity sha512-tnAK2nXe8J/Jf66SwY2cUAKKXInLR9hkNhTtcS7t6J4CgkG8LGBfC1GuuXg7kLLbIQLXpVhZrY/tfyhDbqfzwg==
 
 scdl-core@ducktrshessami/scdl-core:
-  version "1.6.1"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/94fc1bb7237f4bea17c33d954454182f5adb4651"
+  version "1.6.2"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/7276764c9674211f37f24f5d848c17f792816cc7"
   dependencies:
     parse-hls "^1.0.7"
     undici "^5.8.0"
