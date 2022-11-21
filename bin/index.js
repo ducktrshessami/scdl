@@ -1,6 +1,17 @@
 #!/usr/bin/env node
 
-const scdl = require("scdl-core");
+const {
+    setClientID,
+    setOauthToken,
+    validatePlaylistURL,
+    validateURL,
+    getClientID,
+    getOauthToken,
+    getPlaylistInfo,
+    getInfo,
+    streamFromInfoSync,
+    streamPlaylistFromInfo
+} = require("scdl-core");
 const { fetchKey } = require("soundcloud-key-fetch");
 const { getExtension } = require("mime/lite");
 const path = require("path");
@@ -21,8 +32,8 @@ async function main() {
         quality
     } = parseArgs();
     let hadAction = false;
-    scdl.clientID = clientID;
-    scdl.oauthToken = argsOauthToken;
+    setClientID(clientID);
+    setOauthToken(argsOauthToken);
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
@@ -30,16 +41,16 @@ async function main() {
     }
     if (query) {
         hadAction = true;
-        if (playlist ? scdl.playlist.validateURL(query) : scdl.validateURL(query)) {
+        if (playlist ? validatePlaylistURL(query) : validateURL(query)) {
             let options;
-            if (!scdl.clientID && !scdl.oauthToken) {
+            if (!getClientID() && !getOauthToken()) {
                 const configOauthToken = config.read();
                 if (configOauthToken) {
-                    scdl.oauthToken = configOauthToken;
+                    setOauthToken(configOauthToken);
                 }
                 else {
                     console.log("Fetching client ID");
-                    scdl.clientID = await fetchKey();
+                    setClientID(await fetchKey());
                 }
             }
             if (preset || protocol || mimeType || quality) {
@@ -66,14 +77,14 @@ function displayHelp() {
 
 async function getInfoWithRetry(url, playlist) {
     try {
-        return await (playlist ? scdl.playlist.getInfo : scdl.getInfo)(url);
+        return await (playlist ? getPlaylistInfo : getInfo)(url);
     }
     catch (error) {
-        if (scdl.oauthToken && error.message === "401 Unauthorized") {
+        if (getOauthToken() && error.message === "401 Unauthorized") {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
             await config.write();
-            scdl.oauthToken = null;
-            scdl.clientID ||= await fetchKey();
+            setOauthToken(null);
+            setClientID(getClientID() ?? await fetchKey());
             return getInfoWithRetry(url, playlist);
         }
         else {
@@ -94,8 +105,7 @@ function generateName(info, prefix = "", extension = "", outputDir = path.resolv
 
 function downloadTrack(info, output, options) {
     return new Promise(resolve => {
-        const stream = scdl
-            .downloadFromInfo(info, options)
+        const stream = streamFromInfoSync(info, options)
             .on("transcoding", transcoding => {
                 const extension = getExtension(transcoding.format.mime_type);
                 const outputPath = path.resolve(output || generateName(info, info.user.username, `.${extension}`));
@@ -123,7 +133,7 @@ async function downloadPlaylist(info, output, options) {
         console.log(`Creating ${outputDir}`);
         fs.mkdirSync(outputDir);
     }
-    const streams = await scdl.playlist.downloadFromInfo(info, options);
+    const streams = await streamPlaylistFromInfo(info, options);
     const { length: indexWidth } = streams.length.toString();
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         const wideIndex = widen(i + 1, indexWidth);
