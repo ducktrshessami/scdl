@@ -14,8 +14,15 @@ const {
 } = require("scdl-core");
 const { fetchKey } = require("soundcloud-key-fetch");
 const { getExtension } = require("mime/lite");
-const path = require("path");
-const fs = require("fs");
+const {
+    join: joinPath,
+    resolve: resolvePath
+} = require("path");
+const {
+    createWriteStream,
+    mkdirSync,
+    existsSync
+} = require("fs");
 const config = require("./config");
 const parseArgs = require("./parseArgs");
 
@@ -69,7 +76,7 @@ async function main() {
 }
 
 function displayHelp() {
-    const usagePath = path.resolve(__dirname, "..", "USAGE");
+    const usagePath = resolvePath(__dirname, "..", "USAGE");
     fs
         .createReadStream(usagePath, { encoding: "utf8" })
         .pipe(process.stdout);
@@ -93,10 +100,10 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateName(info, prefix = "", extension = "", outputDir = path.resolve(process.cwd())) {
+function generateName(info, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
     let i = 0;
     let filename = (prefix ? prefix + "-" : "") + `${info.title}-${info.id}${extension || ""}`;
-    while (fs.existsSync(path.join(outputDir, filename))) {
+    while (existsSync(joinPath(outputDir, filename))) {
         i++;
         filename = (prefix ? `${prefix}-` : "") + `${info.title}-${info.id}-${i}${extension || ""}`;
     }
@@ -108,9 +115,9 @@ function downloadTrack(info, output, options) {
         const stream = streamFromInfoSync(info, options)
             .on("transcoding", transcoding => {
                 const extension = getExtension(transcoding.format.mime_type);
-                const outputPath = path.resolve(output || generateName(info, info.user.username, `.${extension}`));
+                const outputPath = resolvePath(output || generateName(info, info.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
-                stream.pipe(fs.createWriteStream(outputPath));
+                stream.pipe(createWriteStream(outputPath));
             })
             .on("error", console.error)
             .on("end", () => {
@@ -128,10 +135,10 @@ function widen(n, targetWidth) {
 }
 
 async function downloadPlaylist(info, output, options) {
-    const outputDir = path.resolve(output || generateName(info));
-    if (!fs.existsSync(outputDir)) {
+    const outputDir = resolvePath(output || generateName(info));
+    if (!existsSync(outputDir)) {
         console.log(`Creating ${outputDir}`);
-        fs.mkdirSync(outputDir);
+        mkdirSync(outputDir);
     }
     const streams = await streamPlaylistFromInfo(info, options);
     const { length: indexWidth } = streams.length.toString();
@@ -139,12 +146,12 @@ async function downloadPlaylist(info, output, options) {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
             const extension = getExtension(stream.transcoding.format.mime_type);
-            const outputPath = path.join(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, `.${extension}`, outputDir));
+            const outputPath = joinPath(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
                 .on("end", resolve)
-                .pipe(fs.createWriteStream(outputPath));
+                .pipe(createWriteStream(outputPath));
         }
         else {
             console.error(`Failed to stream ${wideIndex}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
