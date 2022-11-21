@@ -44,7 +44,7 @@ async function main() {
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
-        await config.write(argsOauthToken);
+        config.write(argsOauthToken);
     }
     if (query) {
         hadAction = true;
@@ -89,7 +89,7 @@ async function getInfoWithRetry(url, playlist) {
     catch (error) {
         if (getOauthToken() && error.message === "401 Unauthorized") {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
-            await config.write();
+            config.write();
             setOauthToken(null);
             setClientID(getClientID() ?? await fetchKey());
             return getInfoWithRetry(url, playlist);
