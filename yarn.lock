@@ -19,7 +19,7 @@ parse-hls@^1.0.7:
   resolved "https://registry.yarnpkg.com/parse-hls/-/parse-hls-1.0.7.tgz#b1c437133f596b9d3ad074027aa8c05d33e9eb3c"
   integrity sha512-tnAK2nXe8J/Jf66SwY2cUAKKXInLR9hkNhTtcS7t6J4CgkG8LGBfC1GuuXg7kLLbIQLXpVhZrY/tfyhDbqfzwg==
 
-scdl-core@ducktrshessami/scdl-core#latest:
+scdl-core@ducktrshessami/scdl-core#v2.0.0:
   version "2.0.0"
   resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/6b972189e7792adf6e2316bfaa86f13518c52220"
   dependencies:

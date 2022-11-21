@@ -16,7 +16,7 @@
   "homepage": "https://github.com/ducktrshessami/scdl#readme",
   "dependencies": {
     "mime": "^3.0.0",
-    "scdl-core": "ducktrshessami/scdl-core#latest",
+    "scdl-core": "ducktrshessami/scdl-core#v2.0.0",
     "soundcloud-key-fetch": "^1.0.13"
   }
 }
