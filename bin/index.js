@@ -28,6 +28,8 @@ const config = require("./config");
 const parseArgs = require("./parseArgs");
 const { default: filenamify } = require("filenamify");
 
+const REPLACEMENT_CHAR = "-";
+
 async function main() {
     const {
         query,
