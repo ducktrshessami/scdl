@@ -26,6 +26,7 @@ const {
 } = require("fs");
 const config = require("./config");
 const parseArgs = require("./parseArgs");
+const { default: filenamify } = require("filenamify");
 
 async function main() {
     const {
@@ -101,11 +102,13 @@ async function getInfoWithRetry(url, playlist) {
 }
 
 function generateName(infoData, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
+    const sanitizedTitle = filenamify(infoData.title, { replacement: REPLACEMENT_CHAR });
+    const sanitizedPrefix = (prefix ? filenamify(prefix + "-", { replacement: REPLACEMENT_CHAR }) : "");
     let i = 0;
-    let filename = (prefix ? prefix + "-" : "") + `${infoData.title}-${infoData.id}${extension || ""}`;
+    let filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}${extension || ""}`;
     while (existsSync(joinPath(outputDir, filename))) {
         i++;
-        filename = (prefix ? `${prefix}-` : "") + `${infoData.title}-${infoData.id}-${i}${extension || ""}`;
+        filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}-${i}${extension || ""}`;
     }
     return filename;
 }
