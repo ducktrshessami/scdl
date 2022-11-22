@@ -100,12 +100,12 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateName(info, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
+function generateName(infoData, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
     let i = 0;
-    let filename = (prefix ? prefix + "-" : "") + `${info.title}-${info.id}${extension || ""}`;
+    let filename = (prefix ? prefix + "-" : "") + `${infoData.title}-${infoData.id}${extension || ""}`;
     while (existsSync(joinPath(outputDir, filename))) {
         i++;
-        filename = (prefix ? `${prefix}-` : "") + `${info.title}-${info.id}-${i}${extension || ""}`;
+        filename = (prefix ? `${prefix}-` : "") + `${infoData.title}-${infoData.id}-${i}${extension || ""}`;
     }
     return filename;
 }
@@ -115,7 +115,7 @@ function downloadTrack(info, output, options) {
         const stream = streamFromInfoSync(info, options)
             .on("transcoding", transcoding => {
                 const extension = getExtension(transcoding.format.mime_type);
-                const outputPath = resolvePath(output || generateName(info, info.user.username, `.${extension}`));
+                const outputPath = resolvePath(output || generateName(info.data, info.data.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
                 stream.pipe(createWriteStream(outputPath));
             })
@@ -135,7 +135,7 @@ function widen(n, targetWidth) {
 }
 
 async function downloadPlaylist(info, output, options) {
-    const outputDir = resolvePath(output || generateName(info));
+    const outputDir = resolvePath(output || generateName(info.data));
     if (!existsSync(outputDir)) {
         console.log(`Creating ${outputDir}`);
         mkdirSync(outputDir);
@@ -146,7 +146,7 @@ async function downloadPlaylist(info, output, options) {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
             const extension = getExtension(stream.transcoding.format.mime_type);
-            const outputPath = joinPath(outputDir, generateName(info.tracks[i], `${wideIndex}-${info.tracks[i].user.username}`, `.${extension}`, outputDir));
+            const outputPath = joinPath(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
@@ -154,7 +154,7 @@ async function downloadPlaylist(info, output, options) {
                 .pipe(createWriteStream(outputPath));
         }
         else {
-            console.error(`Failed to stream ${wideIndex}-${info.tracks[i].user.username}-${info.tracks[i].title}-${info.tracks[i].id}`);
+            console.error(`Failed to stream ${wideIndex}-${info.data.tracks[i].user.username}-${info.data.tracks[i].title}-${info.data.tracks[i].id}`);
         }
     })));
 }
