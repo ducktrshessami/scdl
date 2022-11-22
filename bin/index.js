@@ -21,7 +21,8 @@ const {
 const {
     createWriteStream,
     mkdirSync,
-    existsSync
+    existsSync,
+    createReadStream
 } = require("fs");
 const config = require("./config");
 const parseArgs = require("./parseArgs");
@@ -77,8 +78,7 @@ async function main() {
 
 function displayHelp() {
     const usagePath = resolvePath(__dirname, "..", "USAGE");
-    fs
-        .createReadStream(usagePath, { encoding: "utf8" })
+    createReadStream(usagePath, { encoding: "utf8" })
         .pipe(process.stdout);
 }
 
