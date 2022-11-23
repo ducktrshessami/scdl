@@ -1,3 +1,10 @@
+const {
+    Preset,
+    Protocol,
+    MimeType,
+    Quality
+} = require("scdl-core");
+
 const flags = {
     playlist: {
         short: "p",
@@ -17,19 +24,23 @@ const flags = {
     },
     preset: {
         short: "ps",
-        requireValue: true
+        requireValue: true,
+        enum: Preset
     },
     protocol: {
         short: "pc",
-        requireValue: true
+        requireValue: true,
+        enum: Protocol
     },
     "mime-type": {
         short: "mt",
-        requireValue: true
+        requireValue: true,
+        enum: MimeType
     },
     quality: {
         short: "q",
-        requireValue: true
+        requireValue: true,
+        enum: Quality
     }
 };
 
@@ -61,7 +72,15 @@ function parseArgs() {
                     throw new Error(`Option ${process.argv[i]} requires a value`);
                 }
                 else {
-                    result[flag] = process.argv[++i];
+                    const value = process.argv[++i];
+                    if (flags[flag].enum) {
+                        const caps = value.toUpperCase();
+                        if (caps in flags[flag].enum) {
+                            result[flag] = flags[flag].enum[caps];
+                            continue;
+                        }
+                    }
+                    result[flag] = value;
                 }
             }
             else {
