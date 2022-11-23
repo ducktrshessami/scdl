@@ -1,18 +1,12 @@
 # scdl
 
-A command line interface for [scdl-core](https://github.com/ducktrshessami/scdl-core), a Node.js based SoundCloud downloading module
-
-![GitHub top language](https://img.shields.io/github/languages/top/ducktrshessami/scdl)
+A command line interface for [scdl-core](https://github.com/ducktrshessami/scdl-core), a [Node.js](https://nodejs.org/) based SoundCloud downloading module
 
 # Installation
 
-After installing [Node.js](https://nodejs.org/), run the following command:
-
 ```
-npm install -g github:ducktrshessami/scdl
+npm install -g ducktrshessami/scdl
 ```
-
-When I become more social I'll consider putting this on [npm](https://www.npmjs.com/). I'd also have to rename this seeing as scdl is [taken](https://www.npmjs.com/package/scdl).
 
 # Usage
 
@@ -20,13 +14,19 @@ When I become more social I'll consider putting this on [npm](https://www.npmjs.
 Usage: scdl [URL] [options]
     URL     The song URL
     options:
-        -c, --client-id         Set client ID for authorization
-        -a, --oauth-token       Set OAuth token for authorization
-        -o, --output            Specify output file
+        -p,  --playlist          Download a playlist
+        -o,  --output            Specify output file
+        -c,  --client-id         Set client ID for authorization
+        -a,  --oauth-token       Set OAuth token for authorization
+        -ps, --preset            Specify a transcoding preset to search for
+        -pc, --protocol          Specify a format protocol to search for
+        -mt, --mime-type         Specify a format mime type to search for
+        -q,  --quality           Specify a transcoding quality to search for
 
-You must set either a client ID or an OAuth token in order to download songs. When either
-is set, it is saved to a local config for future use, but may need to be updated as client
-IDs expire after a certain amount of time.
+A client ID will automatically be fetched if no valid authorization is present.
+More information about transcoding and format option values can be found in
+the scdl-core reference: https://github.com/ducktrshessami/scdl-core#scdlurl-options
 
-Default output file is "./song_title.mp3"
+Default output file is "./artist_name-song_title-song_id.ext"
+Default output directory for playlists is "./playlist_title-playlist_id"
 ```
