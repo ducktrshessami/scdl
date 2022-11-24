@@ -37,6 +37,7 @@ async function main() {
         "client-id": clientID,
         "oauth-token": argsOauthToken,
         output,
+        strict,
         preset,
         protocol,
         "mime-type": mimeType,
@@ -65,7 +66,10 @@ async function main() {
                 }
             }
             if (preset || protocol || mimeType || quality) {
-                options = { preset, protocol, mimeType, quality };
+                options = { strict, preset, protocol, mimeType, quality };
+            }
+            else if (strict) {
+                console.warn("No transcoding/format options found\nIgnoring strict flag");
             }
             const info = await getInfoWithRetry(query, playlist);
             return (playlist ? downloadPlaylist : downloadTrack)(info, output, options);

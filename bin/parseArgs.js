@@ -22,6 +22,10 @@ const flags = {
         short: "a",
         requireValue: true
     },
+    strict: {
+        short: "s",
+        requireValue: false
+    },
     preset: {
         short: "ps",
         requireValue: true,
