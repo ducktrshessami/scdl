@@ -26,9 +26,9 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v2.0.1:
-  version "2.0.1"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/db03452ae1dc163fb496c60b325ebd860518974c"
+scdl-core@ducktrshessami/scdl-core#v2.0.2:
+  version "2.0.2"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/845247774313cd3ed4621b5b5faf3c011c6ee8bd"
   dependencies:
     parse-hls "^1.0.7"
     undici "^5.12.0"
