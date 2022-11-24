@@ -5,6 +5,7 @@ Usage: scdl [URL] [options]
         -o,  --output            Specify output file
         -c,  --client-id         Set client ID for authorization
         -a,  --oauth-token       Set OAuth token for authorization
+        -s,  --strict            Strictly search for a transcoding
         -ps, --preset            Specify a transcoding preset to search for
         -pc, --protocol          Specify a format protocol to search for
         -mt, --mime-type         Specify a format mime type to search for
@@ -12,7 +13,7 @@ Usage: scdl [URL] [options]
 
 A client ID will automatically be fetched if no valid authorization is present.
 More information about transcoding and format option values can be found in
-the scdl-core reference: https://github.com/ducktrshessami/scdl-core#scdlurl-options
+scdl-core: https://github.com/ducktrshessami/scdl-core#stream-options
 
 Default output file is "./artist_name-song_title-song_id.ext"
 Default output directory for playlists is "./playlist_title-playlist_id"
