@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {
+import {
     setClientID,
     setOauthToken,
     validatePlaylistURL,
@@ -11,26 +11,26 @@ const {
     getInfo,
     streamFromInfoSync,
     streamPlaylistFromInfo
-} = require("scdl-core");
-const { fetchKey } = require("soundcloud-key-fetch");
-const { getExtension } = require("mime/lite");
-const {
-    join: joinPath,
-    resolve: resolvePath
-} = require("path");
-const {
+} from "scdl-core";
+import { fetchKey } from "soundcloud-key-fetch";
+import { getExtension } from "mime/lite";
+import {
+    join as joinPath,
+    resolve as resolvePath
+} from "path";
+import {
     createWriteStream,
     mkdirSync,
     existsSync,
     createReadStream
-} = require("fs");
-const config = require("./config");
-const parseArgs = require("./parseArgs");
-const sanitize = require("sanitize-filename");
+} from "fs";
+import { write, read } from "./config";
+import parseArgs from "./parseArgs";
+import sanitize from "sanitize-filename";
 
 const REPLACEMENT_CHAR = "-";
 
-async function main() {
+try {
     const {
         query,
         playlist,
@@ -49,14 +49,14 @@ async function main() {
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
-        config.write(argsOauthToken);
+        write(argsOauthToken);
     }
     if (query) {
         hadAction = true;
         if (playlist ? validatePlaylistURL(query) : validateURL(query)) {
             let options;
             if (!getClientID() && !getOauthToken()) {
-                const configOauthToken = config.read();
+                const configOauthToken = read();
                 if (configOauthToken) {
                     setOauthToken(configOauthToken);
                 }
@@ -82,6 +82,9 @@ async function main() {
         displayHelp();
     }
 }
+catch (err) {
+    console.error(err);
+}
 
 function displayHelp() {
     const usagePath = resolvePath(__dirname, "..", "USAGE");
@@ -93,16 +96,16 @@ async function getInfoWithRetry(url, playlist) {
     try {
         return await (playlist ? getPlaylistInfo : getInfo)(url);
     }
-    catch (error) {
-        if (getOauthToken() && error.message === "401 Unauthorized") {
+    catch (err) {
+        if (getOauthToken() && err.message === "401 Unauthorized") {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
-            config.write();
+            write();
             setOauthToken(null);
             setClientID(getClientID() ?? await fetchKey());
             return getInfoWithRetry(url, playlist);
         }
         else {
-            console.error(error);
+            console.error(err);
         }
     }
 }
@@ -167,6 +170,3 @@ async function downloadPlaylist(info, output, options) {
         }
     })));
 }
-
-main()
-    .catch(console.error);
