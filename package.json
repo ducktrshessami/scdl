@@ -17,7 +17,7 @@
   "dependencies": {
     "mime": "^3.0.0",
     "sanitize-filename": "^1.6.3",
-    "scdl-core": "ducktrshessami/scdl-core#v2.0.5",
+    "scdl-core": "ducktrshessami/scdl-core#v2.1.0",
     "soundcloud-key-fetch": "^1.0.13"
   }
 }
