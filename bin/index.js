@@ -24,7 +24,7 @@ import {
     existsSync,
     createReadStream
 } from "fs";
-import { write, read } from "./config";
+import { writeConfig, readConfig } from "./config";
 import parseArgs from "./parseArgs";
 import sanitize from "sanitize-filename";
 
@@ -49,14 +49,14 @@ try {
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
-        write(argsOauthToken);
+        writeConfig(argsOauthToken);
     }
     if (query) {
         hadAction = true;
         if (playlist ? validatePlaylistURL(query) : validateURL(query)) {
             let options;
             if (!getClientID() && !getOauthToken()) {
-                const configOauthToken = read();
+                const configOauthToken = readConfig();
                 if (configOauthToken) {
                     setOauthToken(configOauthToken);
                 }
@@ -99,7 +99,7 @@ async function getInfoWithRetry(url, playlist) {
     catch (err) {
         if (getOauthToken() && err.message === "401 Unauthorized") {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
-            write();
+            writeConfig();
             setOauthToken(null);
             setClientID(getClientID() ?? await fetchKey());
             return getInfoWithRetry(url, playlist);

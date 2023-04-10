@@ -19,13 +19,13 @@ function createIfNotExist(checkFile) {
     }
 }
 
-export function read() {
+export function readConfig() {
     createIfNotExist(true);
     const { oauthToken } = JSON.parse(readFileSync(configFile, { encoding: "utf8" }));
     return oauthToken || null;
 }
 
-export function write(oauthToken = "") {
+export function writeConfig(oauthToken = "") {
     createIfNotExist(false);
     writeFileSync(configFile, `{\n    "oauthToken": "${oauthToken}"\n}\n`);
 }
