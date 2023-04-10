@@ -1,10 +1,10 @@
-const { join, resolve } = require("path");
-const {
+import { join, resolve } from "path";
+import {
     existsSync,
     mkdirSync,
     writeFileSync,
     readFileSync
-} = require("fs");
+} from "fs";
 
 const configDir = resolve(__dirname, "..", "config");
 const configFile = join(configDir, "config.json");
@@ -19,18 +19,13 @@ function createIfNotExist(checkFile) {
     }
 }
 
-function read() {
+export function read() {
     createIfNotExist(true);
     const { oauthToken } = JSON.parse(readFileSync(configFile, { encoding: "utf8" }));
     return oauthToken || null;
 }
 
-function write(oauthToken = "") {
+export function write(oauthToken = "") {
     createIfNotExist(false);
     writeFileSync(configFile, `{\n    "oauthToken": "${oauthToken}"\n}\n`);
 }
-
-module.exports = {
-    read,
-    write
-};
