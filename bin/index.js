@@ -24,8 +24,8 @@ import {
     existsSync,
     createReadStream
 } from "fs";
-import { writeConfig, readConfig } from "./config";
-import parseArgs from "./parseArgs";
+import { writeConfig, readConfig } from "./config.js";
+import parseArgs from "./parseArgs.js";
 import sanitize from "sanitize-filename";
 
 const REPLACEMENT_CHAR = "-";
