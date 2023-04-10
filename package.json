@@ -4,16 +4,9 @@
   "description": "A CLI for scdl-core",
   "main": "lib/index.js",
   "bin": "bin/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ducktrshessami/scdl.git"
-  },
+  "repository": "git@github.com:ducktrshessami/scdl.git",
   "author": "ducktrshessami",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ducktrshessami/scdl/issues"
-  },
-  "homepage": "https://github.com/ducktrshessami/scdl#readme",
   "dependencies": {
     "mime": "^3.0.0",
     "sanitize-filename": "^1.6.3",
