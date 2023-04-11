@@ -15,7 +15,7 @@ import {
 import { fetchKey } from "soundcloud-key-fetch";
 import mime from "mime/lite.js";
 import {
-    join as joinPath,
+    join,
     resolve as resolvePath
 } from "path";
 import {
@@ -111,12 +111,12 @@ async function getInfoWithRetry(url, playlist) {
     }
 }
 
-function generateName(infoData, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
+function generateName(infoData, prefix = "", extension = "", outputDir = process.cwd()) {
     const sanitizedTitle = sanitize(infoData.title, { replacement: REPLACEMENT_CHAR });
     const sanitizedPrefix = (prefix ? sanitize(prefix + "-", { replacement: REPLACEMENT_CHAR }) : "");
     let i = 0;
     let filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}${extension || ""}`;
-    while (existsSync(joinPath(outputDir, filename))) {
+    while (existsSync(join(outputDir, filename))) {
         i++;
         filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}-${i}${extension || ""}`;
     }
@@ -159,7 +159,7 @@ async function downloadPlaylist(info, output, options) {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
             const extension = mime.getExtension(stream.transcoding.format.mime_type);
-            const outputPath = joinPath(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
+            const outputPath = join(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
