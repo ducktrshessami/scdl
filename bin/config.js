@@ -1,12 +1,13 @@
-const { join, resolve } = require("path");
-const {
+import { join } from "path";
+import {
     existsSync,
     mkdirSync,
     writeFileSync,
     readFileSync
-} = require("fs");
+} from "fs";
+import { fileURLToPath } from "url";
 
-const configDir = resolve(__dirname, "..", "config");
+const configDir = fileURLToPath(new URL("../config", import.meta.url));;
 const configFile = join(configDir, "config.json");
 const configDefault = "{\n    \"oauthToken\": \"\"\n}\n";
 
@@ -19,18 +20,13 @@ function createIfNotExist(checkFile) {
     }
 }
 
-function read() {
+export function readConfig() {
     createIfNotExist(true);
     const { oauthToken } = JSON.parse(readFileSync(configFile, { encoding: "utf8" }));
     return oauthToken || null;
 }
 
-function write(oauthToken = "") {
+export function writeConfig(oauthToken = "") {
     createIfNotExist(false);
     writeFileSync(configFile, `{\n    "oauthToken": "${oauthToken}"\n}\n`);
 }
-
-module.exports = {
-    read,
-    write
-};

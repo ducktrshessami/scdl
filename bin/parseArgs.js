@@ -1,9 +1,9 @@
-const {
+import {
     Preset,
     Protocol,
     MimeType,
     Quality
-} = require("scdl-core");
+} from "scdl-core";
 
 const flags = {
     playlist: {
@@ -59,7 +59,7 @@ function getFlag(str) {
     }
 }
 
-function parseArgs() {
+export default function parseArgs() {
     const result = {};
     Object
         .keys(flags)
@@ -97,5 +97,3 @@ function parseArgs() {
     }
     return result;
 }
-
-module.exports = parseArgs;

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {
+import {
     setClientID,
     setOauthToken,
     validatePlaylistURL,
@@ -11,26 +11,27 @@ const {
     getInfo,
     streamFromInfoSync,
     streamPlaylistFromInfo
-} = require("scdl-core");
-const { fetchKey } = require("soundcloud-key-fetch");
-const { getExtension } = require("mime/lite");
-const {
-    join: joinPath,
-    resolve: resolvePath
-} = require("path");
-const {
+} from "scdl-core";
+import { fetchKey } from "soundcloud-key-fetch";
+import mime from "mime/lite.js";
+import {
+    join,
+    resolve as resolvePath
+} from "path";
+import {
     createWriteStream,
     mkdirSync,
     existsSync,
     createReadStream
-} = require("fs");
-const config = require("./config");
-const parseArgs = require("./parseArgs");
-const sanitize = require("sanitize-filename");
+} from "fs";
+import { writeConfig, readConfig } from "./config.js";
+import parseArgs from "./parseArgs.js";
+import sanitize from "sanitize-filename";
+import { fileURLToPath } from "url";
 
 const REPLACEMENT_CHAR = "-";
 
-async function main() {
+try {
     const {
         query,
         playlist,
@@ -49,14 +50,14 @@ async function main() {
     if (argsOauthToken) {
         hadAction = true;
         console.log("Storing Oauth token");
-        config.write(argsOauthToken);
+        writeConfig(argsOauthToken);
     }
     if (query) {
         hadAction = true;
         if (playlist ? validatePlaylistURL(query) : validateURL(query)) {
             let options;
             if (!getClientID() && !getOauthToken()) {
-                const configOauthToken = config.read();
+                const configOauthToken = readConfig();
                 if (configOauthToken) {
                     setOauthToken(configOauthToken);
                 }
@@ -72,7 +73,7 @@ async function main() {
                 console.warn("No transcoding/format options found\nIgnoring strict flag");
             }
             const info = await getInfoWithRetry(query, playlist);
-            return (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
+            await (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
         }
         else {
             throw new Error(`Invalid URL: ${query}`);
@@ -82,9 +83,12 @@ async function main() {
         displayHelp();
     }
 }
+catch (err) {
+    console.error(err);
+}
 
 function displayHelp() {
-    const usagePath = resolvePath(__dirname, "..", "USAGE");
+    const usagePath = fileURLToPath(new URL("../USAGE", import.meta.url));
     createReadStream(usagePath, { encoding: "utf8" })
         .pipe(process.stdout);
 }
@@ -93,26 +97,26 @@ async function getInfoWithRetry(url, playlist) {
     try {
         return await (playlist ? getPlaylistInfo : getInfo)(url);
     }
-    catch (error) {
-        if (getOauthToken() && error.message === "401 Unauthorized") {
+    catch (err) {
+        if (getOauthToken() && err.message === "401 Unauthorized") {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
-            config.write();
+            writeConfig();
             setOauthToken(null);
             setClientID(getClientID() ?? await fetchKey());
             return getInfoWithRetry(url, playlist);
         }
         else {
-            console.error(error);
+            console.error(err);
         }
     }
 }
 
-function generateName(infoData, prefix = "", extension = "", outputDir = resolvePath(process.cwd())) {
+function generateName(infoData, prefix = "", extension = "", outputDir = process.cwd()) {
     const sanitizedTitle = sanitize(infoData.title, { replacement: REPLACEMENT_CHAR });
     const sanitizedPrefix = (prefix ? sanitize(prefix + "-", { replacement: REPLACEMENT_CHAR }) : "");
     let i = 0;
     let filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}${extension || ""}`;
-    while (existsSync(joinPath(outputDir, filename))) {
+    while (existsSync(join(outputDir, filename))) {
         i++;
         filename = sanitizedPrefix + `${sanitizedTitle}-${infoData.id}-${i}${extension || ""}`;
     }
@@ -123,7 +127,7 @@ function downloadTrack(info, output, options) {
     return new Promise(resolve => {
         const stream = streamFromInfoSync(info, options)
             .on("transcoding", transcoding => {
-                const extension = getExtension(transcoding.format.mime_type);
+                const extension = mime.getExtension(transcoding.format.mime_type);
                 const outputPath = resolvePath(output || generateName(info.data, info.data.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
                 stream.pipe(createWriteStream(outputPath));
@@ -154,8 +158,8 @@ async function downloadPlaylist(info, output, options) {
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
-            const extension = getExtension(stream.transcoding.format.mime_type);
-            const outputPath = joinPath(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
+            const extension = mime.getExtension(stream.transcoding.format.mime_type);
+            const outputPath = join(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
                 .on("error", console.error)
@@ -167,6 +171,3 @@ async function downloadPlaylist(info, output, options) {
         }
     })));
 }
-
-main()
-    .catch(console.error);
