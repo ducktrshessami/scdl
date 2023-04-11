@@ -13,7 +13,7 @@ import {
     streamPlaylistFromInfo
 } from "scdl-core";
 import { fetchKey } from "soundcloud-key-fetch";
-import { getExtension } from "mime/lite";
+import mime from "mime/lite.js";
 import {
     join as joinPath,
     resolve as resolvePath
@@ -126,7 +126,7 @@ function downloadTrack(info, output, options) {
     return new Promise(resolve => {
         const stream = streamFromInfoSync(info, options)
             .on("transcoding", transcoding => {
-                const extension = getExtension(transcoding.format.mime_type);
+                const extension = mime.getExtension(transcoding.format.mime_type);
                 const outputPath = resolvePath(output || generateName(info.data, info.data.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
                 stream.pipe(createWriteStream(outputPath));
@@ -157,7 +157,7 @@ async function downloadPlaylist(info, output, options) {
     return Promise.all(streams.map((stream, i) => new Promise(resolve => {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
-            const extension = getExtension(stream.transcoding.format.mime_type);
+            const extension = mime.getExtension(stream.transcoding.format.mime_type);
             const outputPath = joinPath(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
