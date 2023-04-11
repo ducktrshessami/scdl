@@ -72,7 +72,7 @@ try {
                 console.warn("No transcoding/format options found\nIgnoring strict flag");
             }
             const info = await getInfoWithRetry(query, playlist);
-            return (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
+            await (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
         }
         else {
             throw new Error(`Invalid URL: ${query}`);
