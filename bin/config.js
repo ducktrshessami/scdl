@@ -1,12 +1,13 @@
-import { join, resolve } from "path";
+import { join } from "path";
 import {
     existsSync,
     mkdirSync,
     writeFileSync,
     readFileSync
 } from "fs";
+import { fileURLToPath } from "url";
 
-const configDir = resolve(__dirname, "..", "config");
+const configDir = fileURLToPath(new URL("../config", import.meta.url));;
 const configFile = join(configDir, "config.json");
 const configDefault = "{\n    \"oauthToken\": \"\"\n}\n";
 

@@ -27,6 +27,7 @@ import {
 import { writeConfig, readConfig } from "./config.js";
 import parseArgs from "./parseArgs.js";
 import sanitize from "sanitize-filename";
+import { fileURLToPath } from "url";
 
 const REPLACEMENT_CHAR = "-";
 
@@ -87,7 +88,7 @@ catch (err) {
 }
 
 function displayHelp() {
-    const usagePath = resolvePath(__dirname, "..", "USAGE");
+    const usagePath = fileURLToPath(new URL("../USAGE", import.meta.url));
     createReadStream(usagePath, { encoding: "utf8" })
         .pipe(process.stdout);
 }
