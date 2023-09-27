@@ -12,7 +12,7 @@ import {
     streamFromInfoSync,
     streamPlaylistFromInfo
 } from "scdl-core";
-import { fetchKey } from "soundcloud-key-fetch";
+import { fetchClientID } from "@scdl/fetch-client";
 import mime from "mime/lite.js";
 import {
     join,
@@ -63,7 +63,7 @@ try {
                 }
                 else {
                     console.log("Fetching client ID");
-                    setClientID(await fetchKey());
+                    setClientID(await fetchClientID());
                 }
             }
             if (preset || protocol || mimeType || quality) {
@@ -102,7 +102,7 @@ async function getInfoWithRetry(url, playlist) {
             console.log("Invalid OAuth token\nClearing token and fetching client ID");
             writeConfig();
             setOauthToken(null);
-            setClientID(getClientID() ?? await fetchKey());
+            setClientID(getClientID() ?? await fetchClientID());
             return getInfoWithRetry(url, playlist);
         }
         else {
