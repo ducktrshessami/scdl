@@ -3,15 +3,15 @@
 
 
 "@fastify/busboy@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.0.0.tgz#f22824caff3ae506b18207bad4126dbc6ccdb6b8"
-  integrity sha512-JUFJad5lv7jxj926GPgymrWQxxjPYuJNiNjNMzqT+HiuP6Vl3dk5xzG+8sTX96np0ZAluvaMzPsjhHZ5rNuNQQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.0.tgz#0709e9f4cb252351c609c6e6d8d6779a8d25edff"
+  integrity sha512-+KpH+QxZU7O4675t3mnkQKcZZg56u+K/Ct2K+N2AZYNVK8kyeo/bI18tI8aPm3tvNNRyTWfj6s5tnGNlcbQRsA==
 
 "@scdl/fetch-client@ducktrshessami/scdl-fetch-client#v1.0.1":
   version "1.0.1"
   resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/68dbeb4f1912ebe560c823980f4e22e7d6baadd1"
 
-m3u-parser-generator@^1.4.0:
+m3u-parser-generator@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-1.4.1.tgz#a06d350d0f9ad1e666d561f7a610e98d3321a0f7"
   integrity sha512-yBdBadSYtJpsi8cz63U89JNCB0UHyiacIrYMiA1qCtzOZBqIQVsYY7leARD8VAYzR+FBMenH0pNk70gr7R8dog==
@@ -28,12 +28,12 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v2.1.6:
-  version "2.1.6"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/0a07bcf3f8d56db3e4cd10ec7adfbcb73db20119"
+scdl-core@ducktrshessami/scdl-core#v3.0.0:
+  version "3.0.0"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/82c93ce9dffcb2e9713297ddf97007a55e73f85f"
   dependencies:
-    m3u-parser-generator "^1.4.0"
-    undici "^5.26.4"
+    m3u-parser-generator "^1.4.1"
+    undici "^5.28.0"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -42,10 +42,10 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^5.26.4:
-  version "5.26.5"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.26.5.tgz#f6dc8c565e3cad8c4475b187f51a13e505092838"
-  integrity sha512-cSb4bPFd5qgR7qr2jYAi0hlX9n5YKK2ONKkLFkxl+v/9BvC0sOpZjBHDBSXc5lWAf5ty9oZdRXytBIHzgUcerw==
+undici@^5.28.0:
+  version "5.28.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.0.tgz#09f6aa4a6f34de8996eec585fe4ceebaa9ef3f36"
+  integrity sha512-gM12DkXhlAc5+/TPe60iy9P6ETgVfqTuRJ6aQ4w8RYu0MqKuXhaq3/b86GfzDQnNA3NUO6aUNdvevrKH59D0Nw==
   dependencies:
     "@fastify/busboy" "^2.0.0"
 

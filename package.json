@@ -12,6 +12,6 @@
     "@scdl/fetch-client": "ducktrshessami/scdl-fetch-client#v1.0.1",
     "mime": "^3.0.0",
     "sanitize-filename": "^1.6.3",
-    "scdl-core": "ducktrshessami/scdl-core#v2.1.6"
+    "scdl-core": "ducktrshessami/scdl-core#v3.0.0"
   }
 }
