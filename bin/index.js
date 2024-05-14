@@ -7,7 +7,7 @@ import {
     existsSync,
     mkdirSync
 } from "fs";
-import mime from "mime/lite.js";
+import mime from "mime/lite";
 import {
     join,
     resolve as resolvePath
