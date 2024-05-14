@@ -1,10 +1,10 @@
-import { join } from "path";
 import {
     existsSync,
     mkdirSync,
-    writeFileSync,
-    readFileSync
+    readFileSync,
+    writeFileSync
 } from "fs";
+import { join } from "path";
 import { fileURLToPath } from "url";
 
 const configDir = fileURLToPath(new URL("../config", import.meta.url));;

@@ -1,7 +1,7 @@
 import {
+    MimeType,
     Preset,
     Protocol,
-    MimeType,
     Quality
 } from "scdl-core";
 

@@ -1,33 +1,33 @@
 #!/usr/bin/env node
 
-import {
-    setClientID,
-    setOauthToken,
-    validatePlaylistURL,
-    validateURL,
-    getClientID,
-    getOauthToken,
-    getPlaylistInfo,
-    getInfo,
-    streamFromInfoSync,
-    streamPlaylistFromInfo
-} from "scdl-core";
 import { fetchClientID } from "@scdl/fetch-client";
+import {
+    createReadStream,
+    createWriteStream,
+    existsSync,
+    mkdirSync
+} from "fs";
 import mime from "mime/lite.js";
 import {
     join,
     resolve as resolvePath
 } from "path";
-import {
-    createWriteStream,
-    mkdirSync,
-    existsSync,
-    createReadStream
-} from "fs";
-import { writeConfig, readConfig } from "./config.js";
-import parseArgs from "./parseArgs.js";
 import sanitize from "sanitize-filename";
+import {
+    getClientID,
+    getInfo,
+    getOauthToken,
+    getPlaylistInfo,
+    setClientID,
+    setOauthToken,
+    streamFromInfoSync,
+    streamPlaylistFromInfo,
+    validatePlaylistURL,
+    validateURL
+} from "scdl-core";
 import { fileURLToPath } from "url";
+import { readConfig, writeConfig } from "./config.js";
+import parseArgs from "./parseArgs.js";
 
 const REPLACEMENT_CHAR = "-";
 
