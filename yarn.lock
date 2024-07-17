@@ -11,10 +11,10 @@ m3u-parser-generator@^1.7.2:
   resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-1.7.2.tgz#c310d11bcbf356e3aaf82c72df5a68308bd9c683"
   integrity sha512-UpkEVQc1T06ZGu19p7gJIrs53Y8fAvpnxFNkQTTvKT2i25hs1wD/49OX7BcX/4kDpWnXm6cL2OspyxIjapPagA==
 
-mime@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-4.0.3.tgz#cd4a1aa052fc980dfc34f111fe1be9e8b878c5d2"
-  integrity sha512-KgUb15Oorc0NEKPbvfa0wRU+PItIEZmiv+pyAO2i0oTIVTJhlzMclU7w4RXWQrSOVH5ax/p/CkIO7KI4OyFJTQ==
+mime@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-4.0.4.tgz#9f851b0fc3c289d063b20a7a8055b3014b25664b"
+  integrity sha512-v8yqInVjhXyqP6+Kw4fV3ZzeMRqEW6FotRsKXjRS5VMTNIuXsdRoAvklpoRgSqXm6o9VNH4/C0mgedko9DdLsQ==
 
 sanitize-filename@^1.6.3:
   version "1.6.3"
@@ -23,12 +23,12 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v3.0.1:
-  version "3.0.1"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/0c78fa5d453abec0e7e168434d599ee8beebd083"
+scdl-core@ducktrshessami/scdl-core#v3.0.2:
+  version "3.0.2"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/f269c911c87e1a28b0b192356db9d5c6d61815ad"
   dependencies:
     m3u-parser-generator "^1.7.2"
-    undici "^6.16.1"
+    undici "^6.19.2"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -37,12 +37,12 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^6.16.1:
-  version "6.16.1"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-6.16.1.tgz#ff8f49c56e5a8629f92ad2ce00d4841b9619b19e"
-  integrity sha512-NeNiTT7ixpeiL1qOIU/xTVpHpVP0svmI6PwoCKaMGaI5AsHOaRdwqU/f7Fi9eyU4u03nd5U/BC8wmRMnS9nqoA==
+undici@^6.19.2:
+  version "6.19.2"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.19.2.tgz#231bc5de78d0dafb6260cf454b294576c2f3cd31"
+  integrity sha512-JfjKqIauur3Q6biAtHJ564e3bWa8VvT+7cSiOJHFbX4Erv6CLGDpg8z+Fmg/1OI/47RA+GI2QZaF48SSaLvyBA==
 
 utf8-byte-length@^1.0.1:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/utf8-byte-length/-/utf8-byte-length-1.0.4.tgz#f45f150c4c66eee968186505ab93fcbb8ad6bf61"
-  integrity sha512-4+wkEYLBbWxqTahEsWrhxepcoVOJ+1z5PGIjPZxRkytcdSUaNjIjBM7Xn8E+pdSuV7SzvWovBFA54FO0JSoqhA==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/utf8-byte-length/-/utf8-byte-length-1.0.5.tgz#f9f63910d15536ee2b2d5dd4665389715eac5c1e"
+  integrity sha512-Xn0w3MtiQ6zoz2vFyUVruaCL53O/DwUvkEeOvj+uulMm0BkUGYWmBYVyElqZaSLhY6ZD0ulfU3aBra2aVT4xfA==
