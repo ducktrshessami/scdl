@@ -6,10 +6,10 @@
   version "1.0.1"
   resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/68dbeb4f1912ebe560c823980f4e22e7d6baadd1"
 
-m3u-parser-generator@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-1.7.2.tgz#c310d11bcbf356e3aaf82c72df5a68308bd9c683"
-  integrity sha512-UpkEVQc1T06ZGu19p7gJIrs53Y8fAvpnxFNkQTTvKT2i25hs1wD/49OX7BcX/4kDpWnXm6cL2OspyxIjapPagA==
+m3u-parser-generator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-2.0.0.tgz#936a9bb13ed37c338ff4fbc9641a9888c783ba5d"
+  integrity sha512-TMuxMl53JYBgKqkPEMK/fnow6U1hRkPl69xqfDTVpP+RQK5kAQeSSgl15CNMzSRreWgodV945MDfa8ZxIgU41A==
 
 mime@^4.0.4:
   version "4.0.4"
@@ -23,12 +23,12 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v3.0.2:
-  version "3.0.2"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/f269c911c87e1a28b0b192356db9d5c6d61815ad"
+scdl-core@ducktrshessami/scdl-core#v3.0.3:
+  version "3.0.3"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/256b1cee9da376c2207f3463371e154c3169ceb9"
   dependencies:
-    m3u-parser-generator "^1.7.2"
-    undici "^6.19.2"
+    m3u-parser-generator "^2.0.0"
+    undici "^6.19.8"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -37,10 +37,10 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^6.19.2:
-  version "6.19.2"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-6.19.2.tgz#231bc5de78d0dafb6260cf454b294576c2f3cd31"
-  integrity sha512-JfjKqIauur3Q6biAtHJ564e3bWa8VvT+7cSiOJHFbX4Erv6CLGDpg8z+Fmg/1OI/47RA+GI2QZaF48SSaLvyBA==
+undici@^6.19.8:
+  version "6.19.8"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.19.8.tgz#002d7c8a28f8cc3a44ff33c3d4be4d85e15d40e1"
+  integrity sha512-U8uCCl2x9TK3WANvmBavymRzxbfFYG+tAu+fgx3zxQy3qdagQqBLwJVrdyO1TBfUXvfKveMKJZhpvUYoOjM+4g==
 
 utf8-byte-length@^1.0.1:
   version "1.0.5"
