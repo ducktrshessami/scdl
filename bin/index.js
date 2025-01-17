@@ -106,7 +106,7 @@ async function getInfoWithRetry(url, playlist) {
             return getInfoWithRetry(url, playlist);
         }
         else {
-            console.error(err);
+            throw err;
         }
     }
 }
