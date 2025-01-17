@@ -9,9 +9,9 @@
   "author": "ducktrshessami",
   "license": "MIT",
   "dependencies": {
-    "@scdl/fetch-client": "ducktrshessami/scdl-fetch-client#v1.0.1",
-    "mime": "^4.0.4",
+    "@scdl/fetch-client": "ducktrshessami/scdl-fetch-client#v1.0.2",
+    "mime": "^4.0.6",
     "sanitize-filename": "^1.6.3",
-    "scdl-core": "ducktrshessami/scdl-core#v3.0.3"
+    "scdl-core": "ducktrshessami/scdl-core#v4.0.0"
   }
 }
