@@ -18,6 +18,7 @@ import {
     getInfo,
     getOauthToken,
     getPlaylistInfo,
+    setAgent,
     setClientID,
     setOauthToken,
     streamFromInfoSync,
@@ -25,6 +26,7 @@ import {
     validatePlaylistURL,
     validateURL
 } from "scdl-core";
+import { Agent } from "undici";
 import { fileURLToPath } from "url";
 import { readConfig, writeConfig } from "./config.js";
 import parseArgs from "./parseArgs.js";
@@ -56,6 +58,7 @@ try {
         hadAction = true;
         if (playlist ? validatePlaylistURL(query) : validateURL(query)) {
             let options;
+            setAgent(new Agent());
             if (!getClientID() && !getOauthToken()) {
                 const configOauthToken = readConfig();
                 if (configOauthToken) {
