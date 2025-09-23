@@ -33,6 +33,7 @@ const REPLACEMENT_CHAR = "-";
 
 try {
     const {
+        version,
         query,
         playlist,
         "client-id": clientID,
@@ -44,6 +45,11 @@ try {
         "mime-type": mimeType,
         quality
     } = parseArgs();
+    if (version) {
+        const { default: { version: packageVersion } } = await import("../package.json", { with: { type: "json" } });
+        console.log(packageVersion);
+        process.exit();
+    }
     let hadAction = false;
     setClientID(clientID);
     setOauthToken(argsOauthToken);

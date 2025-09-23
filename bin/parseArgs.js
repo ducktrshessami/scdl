@@ -6,6 +6,10 @@ import {
 } from "scdl-core";
 
 const flags = {
+    version: {
+        short: "v",
+        requireValue: false
+    },
     playlist: {
         short: "p",
         requireValue: false
