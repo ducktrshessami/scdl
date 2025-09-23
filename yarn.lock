@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@scdl/fetch-client@ducktrshessami/scdl-fetch-client#v1.0.2":
-  version "1.0.2"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/847818413f73600e50783292d0dc57370d42f36d"
+"@scdl/fetch-client@ducktrshessami/scdl-fetch-client#v1.0.3":
+  version "1.0.3"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/d32ca07704fdfdd9c8c089e92185aeade0f9d5ff"
 
-m3u-parser-generator@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-3.0.0.tgz#81e2e13b3827abd4d469dfaac9c9dda53c2c7c50"
-  integrity sha512-T/fY4FiTCP4ZKqchZ0HbkwK4dw63iLyPPoj6aMkPe/EjiyGo6j8zOGCnxQBQH3bQLVgi6vCEnpVph3WU55Jj4w==
+m3u-parser-generator@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-5.0.1.tgz#955ca54ec62d25d08da77b518c489ee7536b28c1"
+  integrity sha512-pzqFQUEwX05N9t64dVEhwJzVtWzhqTIetcfZjHbkpdfD01pKn8YW6GnKEK5XuprsdviBl3qvs7WzKeWpc/LZ5w==
 
-mime@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-4.0.7.tgz#0b7a98b08c63bd3c10251e797d67840c9bde9f13"
-  integrity sha512-2OfDPL+e03E0LrXaGYOtTFIYhiuzep94NSsuhrNULq+stylcJedcHdzHtz0atMUuGwJfFYs0YL5xeC/Ca2x0eQ==
+mime@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-4.1.0.tgz#ec55df7aa21832a36d44f0bbee5c04639b27802f"
+  integrity sha512-X5ju04+cAzsojXKes0B/S4tcYtFAJ6tTMuSPBEn9CPGlrWr8Fiw7qYeLT0XyH80HSoAoqWCaz+MWKh22P7G1cw==
 
 sanitize-filename@^1.6.3:
   version "1.6.3"
@@ -23,12 +23,12 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v4.0.0:
-  version "4.0.0"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/a8c296544a545732d69cab2ad2f8a68617b105aa"
+scdl-core@ducktrshessami/scdl-core#v5.0.0:
+  version "5.0.0"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/d1a0c03f76be2d4c9682750fbef48ea96e170bef"
   dependencies:
-    m3u-parser-generator "^3.0.0"
-    undici "^7.2.3"
+    m3u-parser-generator "^5.0.1"
+    undici "^7.16.0"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -37,10 +37,10 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^7.2.3:
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-7.10.0.tgz#8ae17a976acc6593b13c9ff3342840bea9b24670"
-  integrity sha512-u5otvFBOBZvmdjWLVW+5DAc9Nkq8f24g0O9oY7qw2JVIF1VocIFoyz9JFkuVOS2j41AufeO0xnlweJ2RLT8nGw==
+undici@^7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-7.16.0.tgz#cb2a1e957726d458b536e3f076bf51f066901c1a"
+  integrity sha512-QEg3HPMll0o3t2ourKwOeUAZ159Kn9mx5pnzHRQO8+Wixmh88YdZRiIwat0iNzNNXn0yoEtXJqFpyW7eM8BV7g==
 
 utf8-byte-length@^1.0.1:
   version "1.0.5"
