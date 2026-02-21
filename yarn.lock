@@ -7,9 +7,9 @@
   resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/d32ca07704fdfdd9c8c089e92185aeade0f9d5ff"
 
 m3u-parser-generator@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-5.0.1.tgz#955ca54ec62d25d08da77b518c489ee7536b28c1"
-  integrity sha512-pzqFQUEwX05N9t64dVEhwJzVtWzhqTIetcfZjHbkpdfD01pKn8YW6GnKEK5XuprsdviBl3qvs7WzKeWpc/LZ5w==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-5.0.2.tgz#122fdb9d59c6e4fca04afa5eb3353c2729cb4003"
+  integrity sha512-ifPLvWajdf475gO5oP+t3oGuXGlehOpL7H912bPUI+QpyAMUusV87l5azXTT7cPLXOWqeQkbo5C+OomCeTFX9A==
 
 mime@^4.1.0:
   version "4.1.0"
@@ -38,9 +38,9 @@ truncate-utf8-bytes@^1.0.0:
     utf8-byte-length "^1.0.1"
 
 undici@^7.16.0:
-  version "7.16.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-7.16.0.tgz#cb2a1e957726d458b536e3f076bf51f066901c1a"
-  integrity sha512-QEg3HPMll0o3t2ourKwOeUAZ159Kn9mx5pnzHRQO8+Wixmh88YdZRiIwat0iNzNNXn0yoEtXJqFpyW7eM8BV7g==
+  version "7.22.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-7.22.0.tgz#7a82590a5908e504a47d85c60b0f89ca14240e60"
+  integrity sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==
 
 utf8-byte-length@^1.0.1:
   version "1.0.5"
