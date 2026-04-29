@@ -6,7 +6,7 @@
   version "1.0.3"
   resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/d32ca07704fdfdd9c8c089e92185aeade0f9d5ff"
 
-m3u-parser-generator@^5.0.1:
+m3u-parser-generator@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/m3u-parser-generator/-/m3u-parser-generator-5.0.2.tgz#122fdb9d59c6e4fca04afa5eb3353c2729cb4003"
   integrity sha512-ifPLvWajdf475gO5oP+t3oGuXGlehOpL7H912bPUI+QpyAMUusV87l5azXTT7cPLXOWqeQkbo5C+OomCeTFX9A==
@@ -16,19 +16,19 @@ mime@^4.1.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-4.1.0.tgz#ec55df7aa21832a36d44f0bbee5c04639b27802f"
   integrity sha512-X5ju04+cAzsojXKes0B/S4tcYtFAJ6tTMuSPBEn9CPGlrWr8Fiw7qYeLT0XyH80HSoAoqWCaz+MWKh22P7G1cw==
 
-sanitize-filename@^1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/sanitize-filename/-/sanitize-filename-1.6.3.tgz#755ebd752045931977e30b2025d340d7c9090378"
-  integrity sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==
+sanitize-filename@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/sanitize-filename/-/sanitize-filename-1.6.4.tgz#b6b39ebed9bd1a1898b85c5c03089da74590d6f8"
+  integrity sha512-9ZyI08PsvdQl2r/bBIGubpVdR3RR9sY6RDiWFPreA21C/EFlQhmgo20UZlNjZMMZNubusLhAQozkA0Od5J21Eg==
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v5.0.0:
-  version "5.0.0"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/d1a0c03f76be2d4c9682750fbef48ea96e170bef"
+scdl-core@ducktrshessami/scdl-core#v5.0.1:
+  version "5.0.1"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/6e7a4ffa97d2be3c64eedcc53ea7168105492d38"
   dependencies:
-    m3u-parser-generator "^5.0.1"
-    undici "^7.16.0"
+    m3u-parser-generator "^5.0.2"
+    undici "^8.1.0"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -37,10 +37,10 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^7.16.0:
-  version "7.22.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-7.22.0.tgz#7a82590a5908e504a47d85c60b0f89ca14240e60"
-  integrity sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==
+undici@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-8.1.0.tgz#a8c00208affdd07d83c74554a4a822fdee8ffa94"
+  integrity sha512-E9MkTS4xXLnRPYqxH2e6Hr2/49e7WFDKczKcCaFH4VaZs2iNvHMqeIkyUAD9vM8kujy9TjVrRlQ5KkdEJxB2pw==
 
 utf8-byte-length@^1.0.1:
   version "1.0.5"
