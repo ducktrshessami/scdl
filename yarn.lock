@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@scdl/fetch-client@ducktrshessami/scdl-fetch-client#v1.0.3":
-  version "1.0.3"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/d32ca07704fdfdd9c8c089e92185aeade0f9d5ff"
+"@scdl/fetch-client@ducktrshessami/scdl-fetch-client#v1.0.4":
+  version "1.0.4"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-fetch-client/tar.gz/f004d97f85b7a1e728ca049abfa8304201855dba"
 
 m3u-parser-generator@^5.0.2:
   version "5.0.2"
@@ -23,12 +23,12 @@ sanitize-filename@^1.6.4:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-scdl-core@ducktrshessami/scdl-core#v5.0.1:
-  version "5.0.1"
-  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/6e7a4ffa97d2be3c64eedcc53ea7168105492d38"
+scdl-core@ducktrshessami/scdl-core#v5.1.0:
+  version "5.1.0"
+  resolved "https://codeload.github.com/ducktrshessami/scdl-core/tar.gz/abf9a833beac6ea3547dc5b5923a66615fe6b0a5"
   dependencies:
     m3u-parser-generator "^5.0.2"
-    undici "^8.1.0"
+    undici "^8.10.0"
 
 truncate-utf8-bytes@^1.0.0:
   version "1.0.2"
@@ -37,10 +37,10 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-undici@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-8.1.0.tgz#a8c00208affdd07d83c74554a4a822fdee8ffa94"
-  integrity sha512-E9MkTS4xXLnRPYqxH2e6Hr2/49e7WFDKczKcCaFH4VaZs2iNvHMqeIkyUAD9vM8kujy9TjVrRlQ5KkdEJxB2pw==
+undici@^8.10.0:
+  version "8.10.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-8.10.0.tgz#67ed7c4087f0f40fba7bef3a46f2be80572f2473"
+  integrity sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBkbYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==
 
 utf8-byte-length@^1.0.1:
   version "1.0.5"
