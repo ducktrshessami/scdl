@@ -130,16 +130,16 @@ function generateName(infoData, prefix = "", extension = "", outputDir = process
 }
 
 function downloadTrack(info, output, options) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const stream = streamFromInfoSync(info, options)
-            .on("transcoding", transcoding => {
+            .once("transcoding", transcoding => {
                 const extension = mime.getExtension(transcoding.format.mime_type);
                 const outputPath = resolvePath(output || generateName(info.data, info.data.user.username, `.${extension}`));
                 console.log(`Streaming to ${outputPath}`);
                 stream.pipe(createWriteStream(outputPath));
             })
-            .on("error", console.error)
-            .on("end", () => {
+            .once("error", reject)
+            .once("end", () => {
                 console.log("Done");
                 resolve();
             });
@@ -161,15 +161,15 @@ async function downloadPlaylist(info, output, options) {
     }
     const streams = await streamPlaylistFromInfo(info, options);
     const { length: indexWidth } = streams.length.toString();
-    return Promise.all(streams.map((stream, i) => new Promise(resolve => {
+    return Promise.all(streams.map((stream, i) => new Promise((resolve, reject) => {
         const wideIndex = widen(i + 1, indexWidth);
         if (stream) {
             const extension = mime.getExtension(stream.transcoding.format.mime_type);
             const outputPath = join(outputDir, generateName(info.data.tracks[i], `${wideIndex}-${info.data.tracks[i].user.username}`, `.${extension}`, outputDir));
             console.log(`Streaming to ${outputPath}`);
             stream
-                .on("error", console.error)
-                .on("end", resolve)
+                .once("error", reject)
+                .once("end", resolve)
                 .pipe(createWriteStream(outputPath));
         }
         else {
