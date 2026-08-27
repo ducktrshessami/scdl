@@ -1,9 +1,3 @@
-import {
-    MimeType,
-    Preset,
-    Protocol,
-    Quality
-} from "scdl-core";
 
 const flags = {
     version: {
@@ -32,23 +26,19 @@ const flags = {
     },
     preset: {
         short: "ps",
-        requireValue: true,
-        enum: Preset
+        requireValue: true
     },
     protocol: {
         short: "pc",
-        requireValue: true,
-        enum: Protocol
+        requireValue: true
     },
     "mime-type": {
         short: "mt",
-        requireValue: true,
-        enum: MimeType
+        requireValue: true
     },
     quality: {
         short: "q",
-        requireValue: true,
-        enum: Quality
+        requireValue: true
     }
 };
 
