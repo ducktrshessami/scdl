@@ -80,6 +80,7 @@ try {
             }
             const info = await getInfoWithRetry(query, playlist);
             await (playlist ? downloadPlaylist : downloadTrack)(info, output, options);
+            console.log("Done");
         }
         else {
             throw new Error(`Invalid URL: ${query}`);
@@ -139,10 +140,7 @@ function downloadTrack(info, output, options) {
                 stream.pipe(createWriteStream(outputPath));
             })
             .once("error", reject)
-            .once("end", () => {
-                console.log("Done");
-                resolve();
-            });
+            .once("end", resolve);
     });
 }
 
